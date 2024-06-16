@@ -1,0 +1,9 @@
+# Copyright (c) 2024 Common Ground Electronics
+# SPDX-License-Identifier: Apache-2.0
+
+.vscode
+*~
+.venv
+/build*
+/twister-out*
+__pycache__/

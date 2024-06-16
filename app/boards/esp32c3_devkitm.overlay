@@ -1,0 +1,30 @@
+/*
+ * Copyright (c) 2024 Common Ground Electronics
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/ {
+	aliases {
+		target-uart = &uart1;
+	};
+};
+
+&wifi {
+	status = "okay";
+};
+
+&uart1 {
+	status = "okay";
+	current-speed = <115200>;
+	pinctrl-0 = <&uart1_default>;
+	pinctrl-names = "default";
+};
+
+&pinctrl {
+	uart1_default: uart1_default {
+		group1 {
+			pinmux = <UART1_RX_GPIO6>, <UART1_TX_GPIO7>;
+		};
+	};
+};

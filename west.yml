@@ -1,0 +1,18 @@
+# Copyright (c) 2024 Common Ground Electronics
+# SPDX-License-Identifier: Apache-2.0
+
+manifest:
+
+  remotes:
+    - name: golioth
+      url-base: https://github.com/golioth
+
+  projects:
+    - name: golioth-firmware-sdk
+      remote: golioth
+      path: modules/lib/golioth-firmware-sdk
+      revision: v0.13.1
+      west-commands: scripts/west-commands.yml
+      submodules: true
+      import:
+        file: west-zephyr.yml
