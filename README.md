@@ -43,9 +43,9 @@ pip install -U pip wheel west
 west init -m git@github.com:cgnd/golioth-serial-logger .
 cd golioth-serial-logger/
 west update
-west blobs fetch hal_espressif
 west zephyr-export
 pip install -r ../zephyr/scripts/requirements.txt
+west blobs fetch hal_espressif
 ```
 
 ### Build the firmware
