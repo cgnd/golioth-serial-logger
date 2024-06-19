@@ -26,8 +26,8 @@ This firmware enables logging serial data to the Golioth cloud.
 ```sh
 mkdir golioth-serial-logger-workspace
 cd golioth-serial-logger-workspace
-python -m venv golioth-serial-logger-workspace/.venv
-source golioth-serial-logger-workspace/.venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate
 pip install -U pip wheel west
 west init -m git@github.com:cgnd/golioth-serial-logger .
 cd golioth-serial-logger/
