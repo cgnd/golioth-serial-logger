@@ -1,11 +1,22 @@
 # golioth-serial-logger
 
-This firmware enables logging serial data to the Golioth cloud.
+This firmware enables remote logging of serial data from a target device to the [Golioth logging service](https://docs.golioth.io/device-management/logging/) via a WiFi connection.
+
+```
+┌──────────┐                  ┌──────────┐             ┌──────────────┐
+│          │                  │          │             │              │
+│  Target  │─────UART TX─────▶│  Serial  │     WiFi    │   Golioth    │
+│  Device  │◀────UART RX──────│  Logger  │◀ ─ ─ ─ ─ ─ ▶│    Cloud     │
+│          │                  │          │             │              │
+└──────────┘                  └──────────┘             └──────────────┘
+```
 
 > [!NOTE]
-> This is currently a very rough prototype and should not be used in production.
+> This is currently a very rough proof-of-concept and should not be used in production.
 
 ## Hardware Setup
+
+The serial logger firmware currently supports the following devices:
 
 ### [ESP32-C3-DevKitM-1](https://docs.espressif.com/projects/esp-idf/en/stable/esp32c3/hw-reference/esp32c3/user-guide-devkitm-1.html)
 
@@ -17,7 +28,7 @@ This firmware enables logging serial data to the Golioth cloud.
    | `RXD`              | `GPIO7`                 |
    | `TXD`              | `GPIO6`                 |
 
-2. Connect the ESP32-C3-DevKitM-1 USB port to your PC.
+2. Connect the ESP32-C3-DevKitM-1 USB port to your PC (this is only needed to configure the device).
 
 ## Firmware Setup
 
@@ -48,11 +59,14 @@ west build -p -b esp32c3_devkitm --sysbuild app
 west flash --esp-device=/dev/<your_serial_port>
 ```
 
-## Connect the logger to Golioth
+## Configure the logger to connect to Golioth
 
-Open a serial terminal connection to the USB-serial port on the ESP32-C3-DevKitM-1 (115200 8-N-1).
+Open a serial terminal connection to the USB-serial port on the ESP32-C3-DevKitM-1 (`115200` baud  `8-N-1`).
 
-In the Zephyr console, configure the logger device settings as follows:
+> [!NOTE]
+> The instructions below assume that you've already [provisioned the device in the Golioth console](https://docs.golioth.io/getting-started/console/manage-devices) to use Pre-Shared Key (PSK) authentication.
+
+In the Zephyr shell, configure the serial logger device settings as follows:
 
 ```
 settings set wifi/ssid "<YOUR WIFI SSID>"
@@ -90,3 +104,9 @@ At this point, the logging device is ready for the target to start sending UART 
 ## Usage
 
 Each line of UART data sent by the target device will be automatically sent to the Golioth [logging service](https://docs.golioth.io/device-management/logging/) when a `\n` or `\r` is received from the target device.
+
+Since this is currently just a quick proof-of-concept, there are a bunch of limitations:
+
+- The UART connection between the target and the serial logger is hard coded to `115200` baud  `8-N-1`.
+- Log messages from the target must be less than 256 bytes long.
+- The connection to Golioth requires Pre-Shared Key (PSK) authentication.
